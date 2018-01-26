@@ -6,7 +6,7 @@ HelloWorldWorker.prototype.isPublic = true;
 const logger = require('f5-logger').getInstance();
 
 var request = require('request');
-var formData = "<aaaUser name=\"admin\" pwd=\"cisco123\" />";
+var formData = "<aaaUser name=\"admin\" pwd=\"cisco1\" />";
 var contentLength = formData.length;
 
 var username = "admin";
@@ -73,7 +73,7 @@ function setVLANs(vlans, callback){
 			'Content-Type': 'application/json',
 			'Authorization': auth
 		},
-		uri: 'https://10.192.73.218/mgmt/tm/net/vlan',
+		uri: 'https://10.192.73.xxx/mgmt/tm/net/vlan',
 		//uri: 'http://localhost:8100/tm/net/vlan',
 		body: formData_s,
 		method: 'POST'
@@ -117,7 +117,7 @@ function getVLANs(callback) {
 		  'Content-Type': 'application/x-www-form-urlencoded',
 		  'Cookie': cookie
 		},
-		uri: 'https://10.192.73.30/api/node/mo/uni/tn-UM_Tenant2A/lDevVip-UM_Tenant2A.json?query-target=subtree',
+		uri: 'https://10.192.73.xx/api/node/mo/uni/tn-UM_Tenant2A/lDevVip-UM_Tenant2A.json?query-target=subtree',
 		body: formData,
 		method: 'GET'
 		}, callBackTwo);
