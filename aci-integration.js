@@ -29,8 +29,8 @@ function setVLANs(vlans, callback){
 			"name": "vlan2",
 			"partition": "Common",
 			"interfaces": [{
-					"name": "1.2",
-					"untagged": true
+				"name": "1.2",
+				"untagged": true
 			}],
 			"tag": vlans.vlan2
 		};
@@ -57,8 +57,8 @@ function setVLANs(vlans, callback){
 		"name": "vlan1",
 		"partition": "Common",
 		"interfaces": [{
-						"name": "1.1",
-						"untagged": true
+			"name": "1.1",
+			"untagged": true
 		}],
 		"tag": vlans.vlan1
 	};
@@ -83,7 +83,7 @@ function setVLANs(vlans, callback){
 function getVLANs(callback) {
 
    //Parse the output to grab the VLANS
-	var callBackTwo = function (err, res, body) {
+   var callBackTwo = function (err, res, body) {
 		 var pos = body.indexOf("encap");
 		 pos += 13;
 		 pos1 = pos + 4;
@@ -99,8 +99,8 @@ function getVLANs(callback) {
 		 //restOperation.setBody({vlan1:vlan1, vlan2:vlan2});
 		 //that.completeRestOperation(restOperation);
 		 callback({vlan1:vlan1, vlan2:vlan2});
-	 };
-
+    };
+ 
     var callBackOne = function (err, res, body) {
 		var pos = body.indexOf("token");
 		pos += 7;
@@ -128,7 +128,7 @@ function getVLANs(callback) {
 		  'Content-Length': contentLength,
 		  'Content-Type': 'application/x-www-form-urlencoded'
 		},
-		uri: 'https://10.192.73.30/api/aaaLogin.xml',
+		uri: 'https://10.192.73.xx/api/aaaLogin.xml',
 		body: formData,
 		method: 'POST'
     }, callBackOne);
