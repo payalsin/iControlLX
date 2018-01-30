@@ -53,7 +53,7 @@ Pre-requisite
 Topology
 ========
 
-![](media/image1.png){width="6.5in" height="3.2930555555555556in"}
+![](image1.png){width="6.5in" height="3.2930555555555556in"}
 
 Physical BIG-IP(s) being used in this example:
 
@@ -116,7 +116,7 @@ Deployment Models
 Standalone Physical BIG-IP
 --------------------------
 
-![](media/image6.png){width="6.5in" height="1.4076388888888889in"}
+![](media/image6.png){width="5.5in" height="2.0in"}
 
 The variable file will contain VLAN tags along with other information.
 The VLAN tags should match the VLAN tags configured on APIC in the
