@@ -315,8 +315,7 @@ playbook:
 
 -   ansible-playbook cleanup.yaml
 
-    This will remove all the objects configured by the above playbook
-    (VS/pools/nodes/Self-IPs/VLANS)
+This will remove all the objects configured by the above playbook (VS/pools/nodes/Self-IPs/VLANS)
 
 HA Physical BIG-IP
 ------------------
@@ -336,6 +335,7 @@ Variable file will have additional information needed to setup the
 BIG-IP HA pair
 
 \<\<To view all the files for this scenario, refer to link \<\<\>\> \>\>
+[Variable File](#http://google.com)
 
 ### Playbook
 
