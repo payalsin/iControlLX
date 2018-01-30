@@ -85,10 +85,10 @@ Virtual Edition BIG-IP(s) being used in this example:
 
 On APIC:
 
--   Tenant being used -- UM\_F5\_Tenant
--   Logical device cluster for Physical BIG-IPs -- BIGIP\_PHY
--   Logical device cluster for vCMP capable BIG-IPs -- BIGIP\_vCMP
--   Logical device cluster for VE of BIG-IPs -- BIGIP\_VE
+-   Tenant being used -- UM_F5_Tenant
+-   Logical device cluster for Physical BIG-IPs -- BIGIP_PHY
+-   Logical device cluster for vCMP capable BIG-IPs -- BIGIP_vCMP
+-   Logical device cluster for VE of BIG-IPs -- BIGIP_VE
 
 Directory structure
 ===================
@@ -329,13 +329,12 @@ setup will also configure
 -   Onboarding tasks on both BIG-IP's
 -   Floating-IP(s) setup on the BIG-IP
 
+[Click here for scripts](http://google.com)
+
 ### Variable file
 
 Variable file will have additional information needed to setup the
 BIG-IP HA pair
-
-\<\<To view all the files for this scenario, refer to link \<\<\>\> \>\>
-[Variable File](http://google.com)
 
 ### Playbook
 
@@ -366,9 +365,8 @@ playbook:
 
 -   ansible-playbook cleanup.yaml
 
-    This will remove all the objects configured by the above playbook
-    (VS/pools/nodes/Self-IPs/VLANS). It will also remove all the objects
-    that setup HA (HA pairing will be destroyed)
+This will remove all the objects configured by the above playbook (VS/pools/nodes/Self-IPs/VLANS). It will also remove all the objects
+that setup HA (HA pairing will be destroyed)
 
 SA vCMP BIG-IP
 --------------
@@ -379,6 +377,8 @@ The variable file will contain VLAN tags along with other information.
 The VLAN tags should match the VLAN tags configured on APIC in the
 logical device cluster. The ansible playbook will only configure the
 BIG-IP.
+
+[Click here for scripts](http://google.com)
 
 ### Variable file
 
@@ -396,8 +396,6 @@ BIG-IP
     -   SNAT is set to none (Assumption: Backend servers have the BIG-IP
         as their default gateway)
 -   HTTP service: Pool members, Pool, Virtual Server on the vCMP guest
-
-\<\<To view all the files for this scenario, refer to link \<\<\>\> \>\>
 
 ### Playbook
 
@@ -418,8 +416,7 @@ The main.yaml playbook will be executed. Sequence of events
 
 -   ansible-playbook main.yaml
 
-After running the playbook login to both the vCMP host and guest and
-check all the objects are configured
+After running the playbook login to both the vCMP host and guest and check all the objects are configured
 
 ![](media/image12.png){width="5.510076552930884in"
 height="4.808926071741032in"}
@@ -438,9 +435,8 @@ playbook:
 
 -   ansible-playbook cleanup.yaml
 
-    This will remove all the objects configured by the above playbook on
-    the vCMP guest (VS/pools/nodes/Self-IPs/VLANS). It will also remove
-    objects configured on the vCMP host
+This will remove all the objects configured by the above playbook on the vCMP guest (VS/pools/nodes/Self-IPs/VLANS). It will also remove
+objects configured on the vCMP host
 
 HA vCMP BIG-IP
 --------------
@@ -451,6 +447,8 @@ The variable file will contain VLAN tags along with other information.
 The VLAN tags should match the VLAN tags configured on APIC in the
 logical device cluster. The ansible playbook will only configure the
 BIG-IP.
+
+[Click here for scripts](http://google.com)
 
 ### Variable file
 
@@ -491,8 +489,7 @@ The main.yaml playbook will be executed. Sequence of events
 
 -   ansible-playbook main.yaml
 
-After running the playbook login to both the vCMP hosts and guests and
-check all the objects are configured
+After running the playbook login to both the vCMP hosts and guests and check all the objects are configured
 
 ![](media/image17.png){width="5.510076552930884in"
 height="4.808926071741032in"}
@@ -511,10 +508,8 @@ playbook:
 
 -   ansible-playbook cleanup.yaml
 
-    This will remove all the objects configured by the above playbook on
-    the vCMP guest (VS/pools/nodes/Self-IPs/VLANS). It will also remove
-    objects configured on the vCMP host. HA pairing will also be
-    destroyed
+This will remove all the objects configured by the above playbook on the vCMP guest (VS/pools/nodes/Self-IPs/VLANS). It will also remove
+objects configured on the vCMP host. HA pairing will also be destroyed
 
 SA Virtual Edition BIG-IP
 -------------------------
@@ -527,6 +522,8 @@ service graph is deployed. The ansible playbook will only configure the
 BIG-IP.
 
 ![](media/image22.png){width="6.5in" height="1.9944444444444445in"}
+
+[Click here for scripts](http://google.com)
 
 ### Variable file
 
@@ -556,8 +553,7 @@ The main.yaml playbook will be executed. Sequence of events
 
 -   ansible-playbook main.yaml
 
-After running the playbook login to the BIG-IP and check all the objects
-are configured
+After running the playbook login to the BIG-IP and check all the objects are configured
 
 ![](media/image21.png){width="6.5in" height="4.1097222222222225in"}
 
@@ -566,8 +562,7 @@ playbook:
 
 -   ansible-playbook cleanup.yaml
 
-This will remove all the objects configured by the above playbook
-(VS/pools/nodes/Self-IPs/VLANS)
+This will remove all the objects configured by the above playbook (VS/pools/nodes/Self-IPs/VLANS)
 
 HA Virtual Edition BIG-IP
 -------------------------
@@ -588,12 +583,12 @@ will also configure
 -   Onboarding tasks on both BIG-IP's
 -   Floating-IP(s) setup on the BIG-IP
 
+[Click here for scripts](http://google.com)
+
 ### Variable file
 
 Variable file will have additional information needed to setup the
 BIG-IP HA pair
-
-\<\<To view all the files for this scenario, refer to link \<\<\>\> \>\>
 
 ### Playbook
 
@@ -610,8 +605,7 @@ The main.yaml playbook will be executed. Sequence of events
     -   The name of the virtual server will tie it to an APIC tenant and
         LDEV
 
-After running the playbook login to both the BIG-IP and that check all
-the objects are configured and HA pairing has been done.
+After running the playbook login to both the BIG-IP and that check all the objects are configured and HA pairing has been done.
 
 ![](media/image17.png){width="5.510076552930884in"
 height="4.808926071741032in"}
@@ -630,6 +624,5 @@ playbook:
 
 -   ansible-playbook cleanup.yaml
 
-    This will remove all the objects configured by the above playbook
-    (VS/pools/nodes/Self-IPs/VLANS). It will also remove all the objects
-    that setup HA (HA pairing will be destroyed)
+This will remove all the objects configured by the above playbook (VS/pools/nodes/Self-IPs/VLANS). It will also remove all the objects
+that setup HA (HA pairing will be destroyed)
