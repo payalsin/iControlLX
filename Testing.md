@@ -424,12 +424,6 @@ height="4.808926071741032in"}
 ![](media/image13.png){width="5.510076552930884in"
 height="4.808926071741032in"}
 
-![](media/image14.png){width="5.510076552930884in"
-height="4.808926071741032in"}
-
-![](media/image15.png){width="5.510076552930884in"
-height="4.808926071741032in"}
-
 To perform a cleanup of the BIG-IP configuration, run the following
 playbook:
 
@@ -441,7 +435,7 @@ objects configured on the vCMP host
 HA vCMP BIG-IP
 --------------
 
-![](media/image16.png){width="6.5in" height="2.7215277777777778in"}
+![](media/image14.png){width="6.5in" height="2.7215277777777778in"}
 
 The variable file will contain VLAN tags along with other information.
 The VLAN tags should match the VLAN tags configured on APIC in the
@@ -467,8 +461,6 @@ BIG-IP
         as their default gateway)
 -   HTTP service: Pool members, Pool, Virtual Server on the vCMP guest
 
-\<\<To view all the files for this scenario, refer to link \<\<\>\> \>\>
-
 ### Playbook
 
 The main.yaml playbook will be executed. Sequence of events
@@ -491,16 +483,16 @@ The main.yaml playbook will be executed. Sequence of events
 
 After running the playbook login to both the vCMP hosts and guests and check all the objects are configured
 
+![](media/image15.png){width="5.510076552930884in"
+height="4.808926071741032in"}
+
+![](media/image16.png){width="5.510076552930884in"
+height="4.808926071741032in"}
+
 ![](media/image17.png){width="5.510076552930884in"
 height="4.808926071741032in"}
 
 ![](media/image18.png){width="5.510076552930884in"
-height="4.808926071741032in"}
-
-![](media/image19.png){width="5.510076552930884in"
-height="4.808926071741032in"}
-
-![](media/image20.png){width="5.510076552930884in"
 height="4.808926071741032in"}
 
 To perform a cleanup of the BIG-IP configuration, run the following
@@ -514,14 +506,14 @@ objects configured on the vCMP host. HA pairing will also be destroyed
 SA Virtual Edition BIG-IP
 -------------------------
 
-![](media/image21.png){width="6.5in" height="1.5986111111111112in"}
+![](media/image19.png){width="6.5in" height="1.5986111111111112in"}
 
 The variable file will contain VLAN tags along with other information.
 The VLAN tags should match the VLAN tags assigned by APIC once the
 service graph is deployed. The ansible playbook will only configure the
 BIG-IP.
 
-![](media/image22.png){width="6.5in" height="1.9944444444444445in"}
+![](media/image20.png){width="6.5in" height="1.9944444444444445in"}
 
 [Click here for scripts](http://google.com)
 
@@ -567,14 +559,14 @@ This will remove all the objects configured by the above playbook (VS/pools/node
 HA Virtual Edition BIG-IP
 -------------------------
 
-![](media/image23.png){width="6.5in" height="2.536111111111111in"}
+![](media/image22.png){width="6.5in" height="2.536111111111111in"}
 
 The variable file will contain VLAN tags along with other information.
 The VLAN tags should match the VLAN tags assigned by APIC once the
 service graph is deployed. The ansible playbook will only configure the
 BIG-IP.
 
-![](media/image20.png){width="6.5in" height="1.9944444444444445in"}
+![](media/image23.png){width="6.5in" height="1.9944444444444445in"}
 
 The playbook along with configuration as done on the standalone VE setup
 will also configure
@@ -607,16 +599,16 @@ The main.yaml playbook will be executed. Sequence of events
 
 After running the playbook login to both the BIG-IP and that check all the objects are configured and HA pairing has been done.
 
-![](media/image17.png){width="5.510076552930884in"
+![](media/image24.png){width="5.510076552930884in"
 height="4.808926071741032in"}
 
-![](media/image18.png){width="5.510076552930884in"
+![](media/image25.png){width="5.510076552930884in"
 height="4.808926071741032in"}
 
-![](media/image19.png){width="5.510076552930884in"
+![](media/image26.png){width="5.510076552930884in"
 height="4.808926071741032in"}
 
-![](media/image20.png){width="5.510076552930884in"
+![](media/image27.png){width="5.510076552930884in"
 height="4.808926071741032in"}
 
 To perform a cleanup of the BIG-IP configuration, run the following
