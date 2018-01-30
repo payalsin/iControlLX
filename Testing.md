@@ -98,20 +98,20 @@ Directory structure
 ### Sample APIC logical device configuration
 
 #### Logical device configuration for Physical BIG-IP
-Logical device cluster name: BIGIP_PHY
-VLAN tags: 1195 and 1695
+- Logical device cluster name: BIGIP_PHY
+- VLAN tags: 1195 and 1695
 
 ![](image3.png)
 
 #### Logical device configuration for vCMP enabled BIG-IP
-Logical device cluster name: BIGIP_vCMP
-VLAN tags: 1196 and 1696
+- Logical device cluster name: BIGIP_vCMP
+- VLAN tags: 1196 and 1696
 
 ![](image4.png)
 
 #### Logical device configuration for VE of BIG-IP
-Logical device cluster name: BIGIP_VE
-For VE the VLAN tags are not specified at the logical device cluster level but when the service graph is deployed 
+- Logical device cluster name: BIGIP_VE
+- For VE the VLAN tags are not specified at the logical device cluster level but when the service graph is deployed 
 
 #### ![](image5.png)
 
