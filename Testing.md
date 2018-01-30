@@ -1,6 +1,3 @@
-Contents {#contents .TOCHeading}
-========
-
 [Introduction](#introduction)
 
 [Pre-requisite](#pre-requisite)
@@ -37,13 +34,10 @@ Pre-requisite
 =============
 
 -   BIG-IP(s)
-
     -   Has a MGMT IP assigned to it
-
     -   Licensed
 
 -   APIC
-
     -   Configuration is in place including L4-L7 constructs required to
         configure BIG-IP in unmanaged mode (logical device cluster,
         service graph template, contract etc.)
@@ -52,10 +46,8 @@ Pre-requisite
 
 -   Physical cabling to the APIC and between the BIG-IP(s) (if setting
     up HA) is completed
-
 -   The APIC configuration DOES NOT need to be present for the ansible
     playbooks below to work
-
 -   The playbooks will NOT configure the APIC, only the BIG-IP
 
 Topology
@@ -67,10 +59,8 @@ Physical BIG-IP(s) being used in this example:
 
 -   192.168.73.91 -- Interface 2.2 of the BIG-IP connected to
     Node2/eth1-34 on the APIC
-
 -   192.168.73.92 - Interface 2.2 of the BIG-IP connected to
     Node3/eth1-34 on the APIC
-
 -   Interface 1/1.8 on each vCMP host are connected to each other for HA
     pairing
 
@@ -78,37 +68,26 @@ vCMP capable BIG-IP(s) being used in this example:
 
 -   Host - 192.168.73.80 -- Interface 1/1.3 of the BIG-IP connected to
     Node2/eth1-39 on the APIC
-
     -   Guest -- 192.168.73.82
-
 -   Host - 192.168.73.86 -- Interface 1/1.3 of the BIG-IP connected to
     Node3/eth1-39 on the APIC
-
     -   Guest -- 192.168.73.88
-
 -   Interface 1/1.8 on each vCMP host are connected to each other for HA
     pairing
 
 Virtual Edition BIG-IP(s) being used in this example:
 
 -   192.168.73.180 -- Esxi host connected to Node2/eth1/10
-
 -   192.168.73.181 -- Esxi host connected to Node2/eth1/10
-
 -   Network adaptor 1 used for management
-
 -   Network adaptor 2 and 3 used for client and server traffic
-
 -   Network adaptor 4 on each host used for HA pairing
 
 On APIC:
 
 -   Tenant being used -- UM\_F5\_Tenant
-
 -   Logical device cluster for Physical BIG-IPs -- BIGIP\_PHY
-
 -   Logical device cluster for vCMP capable BIG-IPs -- BIGIP\_vCMP
-
 -   Logical device cluster for VE of BIG-IPs -- BIGIP\_VE
 
 Directory structure
@@ -151,24 +130,19 @@ BIG-IP. This variable file is designed to configure the following on the
 BIG-IP
 
 -   Onboarding : NTP, DNS, Hostname, SSH settings, Module provisioning
-
 -   Networking: 2 VLAN's, 2 Self-IP's, SNAT
-
     -   This represents a 2 ARM mode BIG-IP connection to the APIC
-
         -   Same interface on the BIG-IP will be used for client and
             server traffic
-
         -   Separate VLAN for client and server traffic is tagged on the
             BIG-IP interface
-
     -   SNAT is set to none (Assumption: Backend servers have the BIG-IP
         as their default gateway)
-
 -   HTTP service: Pool members, Pool, Virtual Server
 
+```
 +-----------------------------------+-----------------------------------+
-| onboarding: \"yes\"               | Do you want to onboard the BIG-IP |
+| onboarding: "yes"                 | Do you want to onboard the BIG-IP |
 |                                   | - Options: yes/no                 |
 +===================================+===================================+
 | banner\_text: \"\--Standalone     | SSH banner text                   |
@@ -302,6 +276,73 @@ BIG-IP
 +-----------------------------------+-----------------------------------+
 | host: \"192.168.68.141\"          |                                   |
 +-----------------------------------+-----------------------------------+
+```
+```
+onboarding: "yes"                                   Do you want to onboard the BIG-IP - Options: yes/no
+banner_text: "--Standalone BIG-IP UnManaged ---"	SSH banner text
+	
+hostname: 'bigip.local'	                            Hostname of the BIG-IP (Part of onboarding)
+	
+ntp_servers:	                                    NTP servers to be configured (Part of onboarding)
+ - '172.27.1.1'	
+ - '172.27.1.2'	
+	
+dns_servers:	                                    DNS servers to be configured (Part of onboarding)
+ - '8.8.8.8'	
+ - '4.4.4.4'	
+ip_version: 4	
+	
+module_provisioning:	                            Modules to be provisioned on BIG-IP (Part of onboarding)
+ - name: 'ltm'	
+   level: 'nominal'	
+	
+tenant_name_aci: "UM_F5_Tenant"	                    APIC tenant name
+ldev_name_aci: "BIGIP_PHY"	                        APIC logical device cluster name
+	
+	
+bigip_ip: 10.192.73.91	                            BIG-IP credentials
+bigip_username: "admin"	
+bigip_password: "admin"	
+	
+vlan_information:                                   VLAN to be added to BIG-IP
+- name: "External_VLAN"                             VLAN’s match what is present in the logical device cluster BIGIP_PHY
+  id: "1195"
+  interface: "2.2"
+- name: "Internal_VLAN"
+  id: "1695"
+  interface: "2.2"
+	   
+static_route:	                                    Add a static route
+- name: "default"
+  gw_address: "10.168.56.1"
+  destination: "0.0.0.0"
+  netmask: "0.0.0.0"
+  
+bigip_selfip_information:                           Self-IP to be added to BIG-IP, tag the appropriate VLAN to the respective Self-IP
+- name: 'External-SelfIP'
+  address: '10.168.68.10'
+  netmask: '255.255.255.0'
+  vlan: "{{vlan_information[0]['name']}}"
+- name: 'Internal-SelfIP'
+  address: '192.168.68.10'
+  netmask: '255.255.255.0'
+  vlan: "{{vlan_information[1]['name']}}"	
+  
+service: "yes"	                                    Do you want to configure HTTP service on the BIG-IP -Options: yes/no
+	
+vip_name: "http_vs"	                                VIP information (Part of configuring HTTP service)
+vip_port: "80"	
+vip_ip: "10.168.68.105"
+	
+snat: "None"                                        Options: ‘None/Automap/snat-pool name’
+pool_name: "web-pool"	                            Pool Information (Part of configuring HTTP service)
+pool_members:	
+- port: "80"	
+  host: "192.168.68.140"	
+- port: "80"	
+  host: "192.168.68.141"	
+
+```
 
 ### 
 
