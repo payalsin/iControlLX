@@ -53,7 +53,7 @@ Pre-requisite
 Topology
 ========
 
-![](image1.png){width="6.5in" height="3.2930555555555556in"}
+![]{image1.png width="6.5in" height="3.2930555555555556in"}
 
 Physical BIG-IP(s) being used in this example:
 
