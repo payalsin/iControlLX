@@ -335,7 +335,7 @@ Variable file will have additional information needed to setup the
 BIG-IP HA pair
 
 \<\<To view all the files for this scenario, refer to link \<\<\>\> \>\>
-[Variable File](#http://google.com)
+[Variable File](http://google.com)
 
 ### Playbook
 
