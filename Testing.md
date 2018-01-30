@@ -93,22 +93,21 @@ On APIC:
 Directory structure
 ===================
 
-![](media/image2.png){width="4.145472440944882in"
-height="4.896174540682415in"}
+![](image2.png)
 
 ### Sample APIC logical device configuration
 
 #### Logical device configuration for Physical BIG-IP
 
-![](media/image3.png){width="6.5in" height="2.327777777777778in"}
+![](image3.png)
 
 #### Logical device configuration for vCMP enabled BIG-IP
 
-![](media/image4.png){width="6.5in" height="2.74375in"}
+![](image4.png)
 
 #### Logical device configuration for VE of BIG-IP
 
-#### ![](media/image5.png){width="6.5in" height="2.7125in"}
+#### ![](image5.png)
 
 Deployment Models
 =================
