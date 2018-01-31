@@ -31,29 +31,25 @@ Guie on how to Ansible can be used to configure BIG-IP to correspond to the Unma
 Pre-requisite
 =============
 
--   Ansible environment ready
+- Ansible environment ready
     - [Tips: Getting started with ansible](https://devcentral.f5.com/articles/getting-started-with-ansible)
     - Following packages will be needed to be installed after the base ansible package is installed
       - pip install bigsuds
       - pip install f5-sdk
       - pip install netaddr
     
--   BIG-IP(s)
+- BIG-IP(s)
     -   Has a MGMT IP assigned to it
     -   Licensed
 
--   APIC
-    -   Configuration is in place including L4-L7 constructs required to
-        configure BIG-IP in unmanaged mode (logical device cluster,
-        service graph template, contract etc.)
+- APIC
+    - Configuration is in place including L4-L7 constructs required to configure BIG-IP in unmanaged mode (logical device cluster, service graph template, contract etc.)
 
 **Note:**
 
--   Physical cabling to the APIC and between the BIG-IP(s) (if setting
-    up HA) is completed
--   The APIC configuration DOES NOT need to be present for the ansible
-    playbooks below to work
--   The playbooks will NOT configure the APIC, only the BIG-IP
+- Physical cabling to the APIC and between the BIG-IP(s) (if setting up HA) is completed
+- The APIC configuration DOES NOT need to be present for the ansible playbooks below to work
+- The playbooks will NOT configure the APIC, only the BIG-IP
 
 Topology
 ========
@@ -122,32 +118,28 @@ Deployment Models
 Standalone Physical BIG-IP
 --------------------------
 
-![](media/image6.png){width="5.5in" height="2.0in"}
+![](image6.png)
 
 The user will need to execute only one playbook which is the main.yaml file for this particular deployment scenrario.
 
+[Click here for scripts](http://google.com)
+
 ### Variable file
 
-The variable file will contain VLAN tags along with other information.
-The VLAN tags should match the VLAN tags configured on APIC in the
-logical device cluster. The ansible playbook will only configure the
-BIG-IP.
+- The variable file will contain VLAN tags along with other information.The VLAN tags should match the VLAN tags configured on APIC in the logical device cluster.
+- The ansible playbook will only configure the BIG-IP.
 
-This variable file is designed to configure the following on the
-BIG-IP
+This variable file is designed to configure the following on the BIG-IP
 
--   Onboarding : NTP, DNS, Hostname, SSH settings, Module provisioning
--   Networking: 2 VLAN's, 2 Self-IP's, SNAT
-    -   This represents a 2 ARM mode BIG-IP connection to the APIC
-        -   Same interface on the BIG-IP will be used for client and
-            server traffic
-        -   Separate VLAN for client and server traffic is tagged on the
-            BIG-IP interface
-    -   SNAT is set to none (Assumption: Backend servers have the BIG-IP
-        as their default gateway)
--   HTTP service: Pool members, Pool, Virtual Server
+- Onboarding : NTP, DNS, Hostname, SSH settings, Module provisioning
+- Networking: 2 VLAN's, 2 Self-IP's, SNAT
+    - This represents a 2 ARM mode BIG-IP connection to the APIC
+        - Same interface on the BIG-IP will be used for client and server traffic
+        - Separate VLAN for client and server traffic is tagged on the BIG-IP interface
+    - SNAT is set to none (Assumption: Backend servers have the BIG-IP as their default gateway)
+- HTTP service: Pool members, Pool, Virtual Server
 
-Sample variable file used
+### Sample variable file used
 ```
 onboarding: "yes"                                   Do you want to onboard the BIG-IP - Options: yes/no
 banner_text: "--Standalone BIG-IP UnManaged ---"    SSH banner text
@@ -215,17 +207,13 @@ pool_members:
 
 ```
 
-### 
+If a different scenario is needed to be configured, for example BIG-IP in one arm mode, then the variable file will need to be modified
+accordingly. The onboarding and http service sections will remain the same.
 
-If a different scenario is needed to be configured, for example BIG-IP
-in one arm mode, then the variable file will need to be modified
-accordingly. The onboarding and http service sections will remain the
-same.
+- VLAN and Self-IP -- only 1 entry will be needed
+- SNAT: Automap can be used
 
--   VLAN and Self-IP -- only 1 entry will be needed
--   SNAT: Automap can be used
-
-Example of the changes to the variable file
+### Example of the changes to the variable file
 ```
 vlan_information:
 - name: "External_VLAN"
@@ -240,23 +228,22 @@ bigip_selfip_information:
 
 snat: "Automap"
 ```
+
 ### Playbook execution
 
 The main.yaml playbook will be executed. Sequence of events
 
--   If onboarding is set to 'yes' then the onboarding.yaml playbook will
-    be executed
--   Network constructs will be configured on the BIG-IP
-    -   The name of the VLAN and SELF-IP will tie it to an APIC tenant
--   If service is set to 'yes' then the http_service.yaml playbook will
-    be executed
-    -   The name of the virtual server will tie it to an APIC tenant and
-        LDEV
+- If onboarding is set to 'yes' then the onboarding.yaml playbook will be executed
+- Network constructs will be configured on the BIG-IP
+    - The name of the VLAN and SELF-IP will tie it to an APIC tenant
+- If service is set to 'yes' then the http_service.yaml playbook will be executed
+    - The name of the virtual server will tie it to an APIC tenant and LDEV
 
 **Command to execute playbook**
+Make sure you are in executing the playbook for the correct deployment scenario from the appropriate directory. (Dir: sa_phy)
 -   ansible-playbook main.yaml
 
-**SMain.yaml**
+**Main.yaml**
 ```
 - name: SA Physical Unmanaged Mode BIG-IP setup	
   hosts: localhost	
@@ -313,14 +300,13 @@ The main.yaml playbook will be executed. Sequence of events
 
 ```
 
-After running the playbook login to the BIG-IP and check all the objects
-are configured
+After running the playbook login to the BIG-IP and check all the objects are configured
 
-![](media/image7.png){width="6.5in" height="4.2444444444444445in"}
+![](image7.png)
 
 To perform a cleanup of the BIG-IP configuration, run the following playbook:
 
--   ansible-playbook cleanup.yaml
+- ansible-playbook cleanup.yaml
 
 This will remove all the objects configured by the above playbook (VS/pools/nodes/Self-IPs/VLANS)
 
