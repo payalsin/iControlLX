@@ -126,7 +126,7 @@ Standalone Physical BIG-IP
 
 The user will need to execute only one playbook which is the main.yaml file for this particular deployment scenrario.
 
-[Click here for scripts](http://google.com)
+[Click here for scripts](https://github.com/f5devcentral/f5-aci-integration-automation-ansible/tree/master/integration-guide/sa_phy)
 
 ### Variable file
 
@@ -418,7 +418,7 @@ The playbook along with configuration as done on the standalone physical setup w
 - Onboarding tasks on both BIG-IP's
 - Floating-IP(s) setup on the BIG-IP
 
-[Click here for scripts](http://google.com)
+[Click here for scripts](https://github.com/f5devcentral/f5-aci-integration-automation-ansible/tree/master/integration-guide/ha_phy)
 
 ### Variable file
 
@@ -460,7 +460,7 @@ SA vCMP BIG-IP
 - The variable file will contain VLAN tags along with other information.The VLAN tags should match the VLAN tags configured on APIC in the logical device cluster.
 - The ansible playbook will only configure the BIG-IP.
 
-[Click here for scripts](http://google.com)
+[Click here for scripts](https://github.com/f5devcentral/f5-aci-integration-automation-ansible/tree/master/integration-guide/sa_vcmp)
 
 ### Variable file
 
@@ -513,7 +513,7 @@ HA vCMP BIG-IP
 - The variable file will contain VLAN tags along with other information.The VLAN tags should match the VLAN tags configured on APIC in the logical device cluster.
 - The ansible playbook will only configure the BIG-IP.
 
-[Click here for scripts](http://google.com)
+[Click here for scripts](https://github.com/f5devcentral/f5-aci-integration-automation-ansible/tree/master/integration-guide/ha_vcmp)
 
 ### Variable file
 
@@ -578,7 +578,7 @@ VLAN's on the APIC after a service graph is deployed. These are the values that 
 
 ![](media/image20.png)
 
-[Click here for scripts](http://google.com)
+[Click here for scripts](https://github.com/f5devcentral/f5-aci-integration-automation-ansible/tree/master/integration-guide/sa_ve)
 
 ### Variable file
 
@@ -630,7 +630,7 @@ The playbook along with configuration as done on the standalone VE setup will al
 -   Onboarding tasks on both BIG-IP's
 -   Floating-IP(s) setup on the BIG-IP
 
-[Click here for scripts](http://google.com)
+[Click here for scripts](https://github.com/f5devcentral/f5-aci-integration-automation-ansible/tree/master/integration-guide/ha_ve)
 
 ### Variable file
 
