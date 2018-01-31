@@ -26,13 +26,18 @@
 Introduction
 ============
 
-Use Ansible to configure BIG-IP to correspond to the UnManaged mode of
-APIC deployment. Goal is to perform L2-L3 stitch between the APIC and
-BIG-IP
+Guie on how to Ansible can be used to configure BIG-IP to correspond to the Unmanaged mode of APIC deployment. Goal is to perform L2-L3 stitching between the Cisco ACI fabric and F5 BIG-IP.
 
 Pre-requisite
 =============
 
+-   Ansible environment ready
+    - [Tips: Getting started with ansible][https://devcentral.f5.com/articles/getting-started-with-ansible]
+    - Following packages will be needed to be installed after the base ansible package is installed
+      - pip install bigsuds
+      - pip install f5-sdk
+      - pip install netaddr
+    
 -   BIG-IP(s)
     -   Has a MGMT IP assigned to it
     -   Licensed
@@ -57,7 +62,7 @@ Topology
 
 Physical BIG-IP(s) being used in this example:
 
--   192.168.73.91 -- Interface 2.2 of the BIG-IP connected to
+-   192.168.73.91 -- Interface 2.2 of the BIG-IP connected to
     Node2/eth1-34 on the APIC
 -   192.168.73.92 - Interface 2.2 of the BIG-IP connected to
     Node3/eth1-34 on the APIC
@@ -66,7 +71,7 @@ Physical BIG-IP(s) being used in this example:
 
 vCMP capable BIG-IP(s) being used in this example:
 
--   Host - 192.168.73.80 -- Interface 1/1.3 of the BIG-IP connected to
+-   Host - 192.168.73.80 -- Interface 1/1.3 of the BIG-IP connected to
     Node2/eth1-39 on the APIC
     -   Guest -- 192.168.73.82
 -   Host - 192.168.73.86 -- Interface 1/1.3 of the BIG-IP connected to
@@ -77,7 +82,7 @@ vCMP capable BIG-IP(s) being used in this example:
 
 Virtual Edition BIG-IP(s) being used in this example:
 
--   192.168.73.180 -- Esxi host connected to Node2/eth1/10
+-   192.168.73.180 -- Esxi host connected to Node2/eth1/10
 -   192.168.73.181 -- Esxi host connected to Node2/eth1/10
 -   Network adaptor 1 used for management
 -   Network adaptor 2 and 3 used for client and server traffic
@@ -85,7 +90,7 @@ Virtual Edition BIG-IP(s) being used in this example:
 
 On APIC:
 
--   Tenant being used -- UM_F5_Tenant
+-   Tenant being used -- UM_F5_Tenant
 -   Logical device cluster for Physical BIG-IPs -- BIGIP_PHY
 -   Logical device cluster for vCMP capable BIG-IPs -- BIGIP_vCMP
 -   Logical device cluster for VE of BIG-IPs -- BIGIP_VE
@@ -96,6 +101,8 @@ Directory structure
 ![](image2.png)
 
 ### Sample APIC logical device configuration
+
+This configuration is expected to be present on the APIC prior to running the playbooks. As mentioned above this is NOT a requirement but without the configuration on the APIC there will be no data traffic flowing. It is recommended to have this configuration prior to running the playbooks for the expected result.
 
 #### Logical device configuration for Physical BIG-IP
 - Logical device cluster name: BIGIP_PHY
@@ -123,18 +130,19 @@ Standalone Physical BIG-IP
 
 ![](media/image6.png){width="5.5in" height="2.0in"}
 
+The user will need to execute only one playbook which is the main.yaml file for this particular deployment scenrario.
+
+### Variable file
+
 The variable file will contain VLAN tags along with other information.
 The VLAN tags should match the VLAN tags configured on APIC in the
 logical device cluster. The ansible playbook will only configure the
 BIG-IP.
 
-### Variable file
-
-This file will contain all the information needed to configure the
-BIG-IP. This variable file is designed to configure the following on the
+This variable file is designed to configure the following on the
 BIG-IP
 
--   Onboarding : NTP, DNS, Hostname, SSH settings, Module provisioning
+-   Onboarding : NTP, DNS, Hostname, SSH settings, Module provisioning
 -   Networking: 2 VLAN's, 2 Self-IP's, SNAT
     -   This represents a 2 ARM mode BIG-IP connection to the APIC
         -   Same interface on the BIG-IP will be used for client and
@@ -145,6 +153,7 @@ BIG-IP
         as their default gateway)
 -   HTTP service: Pool members, Pool, Virtual Server
 
+Sample variable file used
 ```
 onboarding: "yes"                                   Do you want to onboard the BIG-IP - Options: yes/no
 banner_text: "--Standalone BIG-IP UnManaged ---"    SSH banner text
@@ -221,8 +230,8 @@ same.
 
 -   VLAN and Self-IP -- only 1 entry will be needed
 -   SNAT: Automap can be used
--   Example of the changes in the variable file
 
+Example of the changes to the variable file
 ```
 vlan_information:
 - name: "External_VLAN"
@@ -237,7 +246,7 @@ bigip_selfip_information:
 
 snat: "Automap"
 ```
-### Playbook
+### Playbook execution
 
 The main.yaml playbook will be executed. Sequence of events
 
@@ -245,7 +254,7 @@ The main.yaml playbook will be executed. Sequence of events
     be executed
 -   Network constructs will be configured on the BIG-IP
     -   The name of the VLAN and SELF-IP will tie it to an APIC tenant
--   If service is set to 'yes' then the http\_service.yaml playbook will
+-   If service is set to 'yes' then the http_service.yaml playbook will
     be executed
     -   The name of the virtual server will tie it to an APIC tenant and
         LDEV
@@ -253,7 +262,7 @@ The main.yaml playbook will be executed. Sequence of events
 **Command to execute playbook**
 -   ansible-playbook main.yaml
 
-**Main.yaml**
+**SMain.yaml**
 ```
 - name: SA Physical Unmanaged Mode BIG-IP setup	
   hosts: localhost	
@@ -315,8 +324,7 @@ are configured
 
 ![](media/image7.png){width="6.5in" height="4.2444444444444445in"}
 
-To perform a cleanup of the BIG-IP configuration, run the following
-playbook:
+To perform a cleanup of the BIG-IP configuration, run the following playbook:
 
 -   ansible-playbook cleanup.yaml
 
