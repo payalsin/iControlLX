@@ -32,7 +32,7 @@ Pre-requisite
 =============
 
 -   Ansible environment ready
-    - [Tips: Getting started with ansible][https://devcentral.f5.com/articles/getting-started-with-ansible]
+    - [Tips: Getting started with ansible](https://devcentral.f5.com/articles/getting-started-with-ansible)
     - Following packages will be needed to be installed after the base ansible package is installed
       - pip install bigsuds
       - pip install f5-sdk
@@ -60,7 +60,7 @@ Topology
 
 ![](image1.png)
 
-Physical BIG-IP(s) being used in this example:
+**Physical BIG-IP(s) being used in this example:**
 
 -   192.168.73.91 -- Interface 2.2 of the BIG-IP connected to
     Node2/eth1-34 on the APIC
@@ -69,7 +69,7 @@ Physical BIG-IP(s) being used in this example:
 -   Interface 1/1.8 on each vCMP host are connected to each other for HA
     pairing
 
-vCMP capable BIG-IP(s) being used in this example:
+**vCMP capable BIG-IP(s) being used in this example:**
 
 -   Host - 192.168.73.80 -- Interface 1/1.3 of the BIG-IP connected to
     Node2/eth1-39 on the APIC
@@ -80,7 +80,7 @@ vCMP capable BIG-IP(s) being used in this example:
 -   Interface 1/1.8 on each vCMP host are connected to each other for HA
     pairing
 
-Virtual Edition BIG-IP(s) being used in this example:
+**Virtual Edition BIG-IP(s) being used in this example:**
 
 -   192.168.73.180 -- Esxi host connected to Node2/eth1/10
 -   192.168.73.181 -- Esxi host connected to Node2/eth1/10
@@ -88,7 +88,7 @@ Virtual Edition BIG-IP(s) being used in this example:
 -   Network adaptor 2 and 3 used for client and server traffic
 -   Network adaptor 4 on each host used for HA pairing
 
-On APIC:
+**On APIC:**
 
 -   Tenant being used -- UM_F5_Tenant
 -   Logical device cluster for Physical BIG-IPs -- BIGIP_PHY
