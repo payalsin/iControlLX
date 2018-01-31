@@ -62,38 +62,32 @@ Topology
 
 **Physical BIG-IP(s) being used in this example:**
 
--   192.168.73.91 -- Interface 2.2 of the BIG-IP connected to
-    Node2/eth1-34 on the APIC
--   192.168.73.92 - Interface 2.2 of the BIG-IP connected to
-    Node3/eth1-34 on the APIC
--   Interface 1/1.8 on each vCMP host are connected to each other for HA
-    pairing
+- 192.168.73.91 -- Interface 2.2 of the BIG-IP connected to Node2/eth1-34 on the APIC
+- 192.168.73.92 - Interface 2.2 of the BIG-IP connected to Node3/eth1-34 on the APIC
+- Interface 1/1.8 on each vCMP host are connected to each other for HA pairing
 
 **vCMP capable BIG-IP(s) being used in this example:**
 
--   Host - 192.168.73.80 -- Interface 1/1.3 of the BIG-IP connected to
-    Node2/eth1-39 on the APIC
-    -   Guest -- 192.168.73.82
--   Host - 192.168.73.86 -- Interface 1/1.3 of the BIG-IP connected to
-    Node3/eth1-39 on the APIC
-    -   Guest -- 192.168.73.88
--   Interface 1/1.8 on each vCMP host are connected to each other for HA
-    pairing
+- Host1 - 192.168.73.80 -- Interface 1/1.3 of the BIG-IP connected toNode2/eth1-39 on the APIC
+    - Guest1 -- 192.168.73.82
+- Host2 - 192.168.73.86 -- Interface 1/1.3 of the BIG-IP connected to Node3/eth1-39 on the APIC
+    - Guest -- 192.168.73.88
+- Interface 1/1.8 on each vCMP host are connected to each other for HA pairing
 
 **Virtual Edition BIG-IP(s) being used in this example:**
 
--   192.168.73.180 -- Esxi host connected to Node2/eth1/10
--   192.168.73.181 -- Esxi host connected to Node2/eth1/10
--   Network adaptor 1 used for management
--   Network adaptor 2 and 3 used for client and server traffic
--   Network adaptor 4 on each host used for HA pairing
+- 192.168.73.180 -- Esxi host connected to Node2/eth1/10
+- 192.168.73.181 -- Esxi host connected to Node2/eth1/10
+- Network adaptor 1 used for management
+- Network adaptor 2 and 3 used for client and server traffic
+- Network adaptor 4 on each host used for HA pairing
 
 **On APIC:**
 
--   Tenant being used -- UM_F5_Tenant
--   Logical device cluster for Physical BIG-IPs -- BIGIP_PHY
--   Logical device cluster for vCMP capable BIG-IPs -- BIGIP_vCMP
--   Logical device cluster for VE of BIG-IPs -- BIGIP_VE
+- Tenant being used -- UM_F5_Tenant
+- Logical device cluster for Physical BIG-IPs -- BIGIP_PHY
+- Logical device cluster for vCMP capable BIG-IPs -- BIGIP_vCMP
+- Logical device cluster for VE of BIG-IPs -- BIGIP_VE
 
 Directory structure
 ===================
