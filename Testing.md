@@ -56,7 +56,7 @@ Please go through the [Standalone Physical BIG-IP](#standalone-physical-big-ip) 
 Topology
 ========
 
-![](image1.png)
+![](media/image1.png)
 
 **Physical BIG-IP(s) being used in this example:**
 
@@ -92,7 +92,7 @@ Directory structure
 
 While following the guide below assumption is that all the folders are placed in a directory called **'playbooks'**
 
-![](image2.png)
+![](media/image2.png)
 
 ### Sample APIC logical device configuration
 
@@ -102,19 +102,19 @@ This configuration is expected to be present on the APIC prior to running the pl
 - Logical device cluster name: BIGIP_PHY
 - VLAN tags: 1195 and 1695
 
-![](image3.png)
+![](media/image3.png)
 
 #### Logical device configuration for vCMP enabled BIG-IP
 - Logical device cluster name: BIGIP_vCMP
 - VLAN tags: 1196 and 1696
 
-![](image4.png)
+![](media/image4.png)
 
 #### Logical device configuration for VE of BIG-IP
 - Logical device cluster name: BIGIP_VE
 - For VE the VLAN tags are not specified at the logical device cluster level but when the service graph is deployed 
 
-#### ![](image5.png)
+#### ![](media/image5.png)
 
 Deployment Models
 =================
@@ -122,7 +122,7 @@ Deployment Models
 Standalone Physical BIG-IP
 --------------------------
 
-![](image6.png)
+![](media/image6.png)
 
 The user will need to execute only one playbook which is the main.yaml file for this particular deployment scenrario.
 
@@ -492,7 +492,10 @@ The main.yaml playbook will be executed. Sequence of events
 
 After running the playbook login to both the vCMP host and guest and check all the objects are configured
 
+VLAN's from the vCMP host are assigned to the vCMP guest
 ![](media/image12.png)
+
+Objects configured on the vCMP guest
 ![](media/image13.png)
 
 To perform a cleanup of the BIG-IP configuration, run the following playbook:
@@ -543,12 +546,16 @@ The main.yaml playbook will be executed. Sequence of events
 
 After running the playbook login to both the vCMP hosts and guests and check all the objects are configured
 
+VLAN's from the vCMP host1 are assigned to the vCMP guest
 ![](media/image15.png)
 
+Objects are configured on the vCMP guest and HA pairing is achieved
 ![](media/image16.png)
 
+VLAN's from the vCMP host2 are assigned to the vCMP guest
 ![](media/image17.png)
 
+Objects are configured on the vCMP guest and HA pairing is achieved
 ![](media/image18.png)
 
 To perform a cleanup of the BIG-IP configuration, run the following playbook:
@@ -567,6 +574,8 @@ SA Virtual Edition BIG-IP
 - The ansible playbook will only configure the BIG-IP.
 
 VLAN information on the APIC after a service graph is deployed. These are the values that should be provided in your variable file
+- VLANS : 1881 and 1848
+
 ![](media/image20.png)
 
 [Click here for scripts](http://google.com)
@@ -609,6 +618,9 @@ HA Virtual Edition BIG-IP
 
 - The variable file will contain VLAN tags along with other information. The VLAN tags should match the VLAN tags assigned by APIC once the service graph is deployed.
 - The ansible playbook will only configure the BIG-IP.
+
+VLAN information on the APIC after a service graph is deployed. These are the values that should be provided in your variable file
+- VLANS : 1881 and 1848
 
 ![](media/image23.png)
 
