@@ -573,7 +573,7 @@ SA Virtual Edition BIG-IP
 - The variable file will contain VLAN tags along with other information. The VLAN tags should match the VLAN tags assigned by APIC once the service graph is deployed. 
 - The ansible playbook will only configure the BIG-IP.
 
-VLAN information on the APIC after a service graph is deployed. These are the values that should be provided in your variable file
+VLAN's on the APIC after a service graph is deployed. These are the values that should be provided in your variable file
 - VLANS : 1881 and 1848
 
 ![](media/image20.png)
@@ -619,7 +619,7 @@ HA Virtual Edition BIG-IP
 - The variable file will contain VLAN tags along with other information. The VLAN tags should match the VLAN tags assigned by APIC once the service graph is deployed.
 - The ansible playbook will only configure the BIG-IP.
 
-VLAN information on the APIC after a service graph is deployed. These are the values that should be provided in your variable file
+VLAN's on the APIC after a service graph is deployed. These are the values that should be provided in your variable file
 - VLANS : 1881 and 1848
 
 ![](media/image23.png)
