@@ -254,7 +254,7 @@ ansible-playbook playbooks/sa_phy/main.yaml
 PLAY [Standalone Physical Unmanaged Mode BIG-IP setup] ***************************************************************
 
 TASK [include_tasks] *************************************************************************************************
-included: /root/ps_ansible/playbooks/aci_guide/common/onboarding.yaml for localhost
+included: /root/ps_ansible/playbooks/common/onboarding.yaml for localhost
 
 TASK [Configure NTP server on BIG-IP] ********************************************************************************
 changed: [localhost -> localhost]
@@ -283,7 +283,7 @@ TASK [Add route(s)] ************************************************************
 changed: [localhost -> localhost] => (item={u'gw_address': u'10.168.56.1', u'netmask': u'0.0.0.0', u'destination': u'0.0.0.0', u'name': u'default'})
 
 TASK [include_tasks] *************************************************************************************************
-included: /root/ps_ansible/playbooks/aci_guide/common/http_service.yaml for localhost
+included: /root/ps_ansible/playbooks/common/http_service.yaml for localhost
 
 TASK [Create nodes] **************************************************************************************************
 changed: [localhost -> localhost] => (item={u'host': u'192.168.56.140', u'port': u'80'})
@@ -379,7 +379,7 @@ ansible-playbook playbooks/sa_phy/cleanup.yaml
 PLAY [Cleanup Standalone Physical Unmanaged Mode BIG-IP setup] *******************************************************
 
 TASK [include_tasks] *************************************************************************************************
-included: /root/ps_ansible/playbooks/aci_guide/common/http_service_cleanup.yaml for localhost
+included: /root/ps_ansible/playbooks/common/http_service_cleanup.yaml for localhost
 
 TASK [Delete Virtual Server] *****************************************************************************************
 
@@ -410,50 +410,44 @@ localhost                  : ok=7    changed=6    unreachable=0    failed=0
 HA Physical BIG-IP
 ------------------
 
-![](media/image8.png){width="6.5in" height="2.3979166666666667in"}
+![](media/image8.png)
 
-The playbook along with configuration as done on the standalone physical
-setup will also configure
+The playbook along with configuration as done on the standalone physical setup will also configure
 
--   HA setup between the two BIG-IP's
--   Onboarding tasks on both BIG-IP's
--   Floating-IP(s) setup on the BIG-IP
+- HA setup between the two BIG-IP's
+- Onboarding tasks on both BIG-IP's
+- Floating-IP(s) setup on the BIG-IP
 
 [Click here for scripts](http://google.com)
 
 ### Variable file
 
-Variable file will have additional information needed to setup the
-BIG-IP HA pair
+Variable file will have additional information needed to setup the BIG-IP HA pair
 
 ### Playbook
 
+**Command to execute playbook**
+Make sure you are in executing the playbook for the correct deployment scenario from the appropriate directory. (Directory: ha_phy)
+-   ansible-playbook playbooks/ha_phy/main.yaml
+
 The main.yaml playbook will be executed. Sequence of events
 
--   If onboarding is set to 'yes' then the onboarding.yaml playbook will
-    be executed on both BIG-IPs
--   HA pairing will be configured
--   Network constructs will be configured on the both the BIG-IPs
-    -   The name of the VLAN and SELF-IP will tie it to an APIC tenant
--   If service is set to 'yes' then the http\_service.yaml playbook will
-    be executed on one BIG-IP (configuration will be synced
-    automatically between the pair of BIG-IPs)
-    -   The name of the virtual server will tie it to an APIC tenant and
-        LDEV
+- If onboarding is set to 'yes' then the onboarding.yaml playbook will be executed on both BIG-IPs
+- HA pairing will be configured
+- Network constructs will be configured on the both the BIG-IPs
+    - The name of the VLAN and SELF-IP will tie it to an APIC tenant
+- If service is set to 'yes' then the http_service.yaml playbook will be executed on one BIG-IP (configuration will be synced automatically between the pair of BIG-IPs)
+    - The name of the virtual server will tie it to an APIC tenant and LDEV
 
-After running the playbook login to both the BIG-IP and that check all
-the objects are configured and HA pairing has been done.
+After running the playbook login to both the BIG-IP and that check all the objects are configured and HA pairing has been done.
 
-![](media/image9.png){width="5.167113954505687in"
-height="3.850333552055993in"}
+![](media/image9.png)
 
-![](media/image10.png){width="5.158470034995625in"
-height="3.6503444881889764in"}
+![](media/image10.png)
 
-To perform a cleanup of the BIG-IP configuration, run the following
-playbook:
+To perform a cleanup of the BIG-IP configuration, run the following playbook:
 
--   ansible-playbook cleanup.yaml
+-   ansible-playbook playbooks/ha_phy/cleanup.yaml
 
 This will remove all the objects configured by the above playbook (VS/pools/nodes/Self-IPs/VLANS). It will also remove all the objects
 that setup HA (HA pairing will be destroyed)
@@ -461,134 +455,105 @@ that setup HA (HA pairing will be destroyed)
 SA vCMP BIG-IP
 --------------
 
-![](media/image11.png){width="6.5in" height="2.745138888888889in"}
+![](media/image11.png)
 
-The variable file will contain VLAN tags along with other information.
-The VLAN tags should match the VLAN tags configured on APIC in the
-logical device cluster. The ansible playbook will only configure the
-BIG-IP.
+- The variable file will contain VLAN tags along with other information.The VLAN tags should match the VLAN tags configured on APIC in the logical device cluster.
+- The ansible playbook will only configure the BIG-IP.
 
 [Click here for scripts](http://google.com)
 
 ### Variable file
 
-This file will contain all the information needed to configure the
-BIG-IP. This variable file is designed to configure the following on the
-BIG-IP
+This file will contain all the information needed to configure the BIG-IP. This variable file is designed to configure the following on the BIG-IP
 
--   Onboarding the vCMP guest : NTP, DNS, Hostname, SSH settings, Module
-    provisioning
--   VLAN's, added to the vCMP host
--   VLAN's assigned from the vCMP host to the vCMP guest
--   2 Self-IP's, SNAT on the vCMP guest
-    -   This represents a 2 ARM mode BIG-IP connection to the APIC
-        -   VLAN is tagged on a BIG-IP interface
-    -   SNAT is set to none (Assumption: Backend servers have the BIG-IP
-        as their default gateway)
--   HTTP service: Pool members, Pool, Virtual Server on the vCMP guest
+- Onboarding the vCMP guest : NTP, DNS, Hostname, SSH settings, Module provisioning
+- VLAN's added to the vCMP host
+- VLAN's assigned from the vCMP host to the vCMP guest
+- 2 Self-IP's, SNAT on the vCMP guest
+    - This represents a 2 ARM mode BIG-IP connection to the APIC
+        - VLAN is tagged on a BIG-IP interface
+    - SNAT is set to none (Assumption: Backend servers have the BIG-IP as their default gateway)
+- HTTP service: Pool members, Pool, Virtual Server on the vCMP guest
 
 ### Playbook
 
+**Command to execute playbook**
+Make sure you are in executing the playbook for the correct deployment scenario from the appropriate directory. (Directory: sa_vcmp)
+-   ansible-playbook playbooks/sa_vcmp/main.yaml
+
 The main.yaml playbook will be executed. Sequence of events
 
--   If onboarding is set to 'yes' then the tasks in the onboarding.yaml
-    playbook will be executed on the vCMP guest
--   Network constructs will be configured on the BIG-IP
-    -   VLAN will be configured on the vCMP host and then assigned to
-        the vCMP guest
-    -   SELF-IP will tie it to an APIC tenant
--   If service is set to 'yes' then the http\_service.yaml playbook will
-    be executed
-    -   The name of the virtual server will tie it to an APIC tenant and
-        LDEV
-
-**Command to execute playbook**
-
--   ansible-playbook main.yaml
+- If onboarding is set to 'yes' then the tasks in the onboarding.yaml playbook will be executed on the vCMP guest
+- Network constructs will be configured on the BIG-IP
+    - VLAN will be configured on the vCMP host and then assigned to the vCMP guest
+    - SELF-IP will tie it to an APIC tenant
+- If service is set to 'yes' then the http_service.yaml playbook will be executed
+    - The name of the virtual server will tie it to an APIC tenant and LDEV
 
 After running the playbook login to both the vCMP host and guest and check all the objects are configured
 
-![](media/image12.png){width="5.510076552930884in"
-height="4.808926071741032in"}
+![](media/image12.png)
+![](media/image13.png)
 
-![](media/image13.png){width="5.510076552930884in"
-height="4.808926071741032in"}
+To perform a cleanup of the BIG-IP configuration, run the following playbook:
 
-To perform a cleanup of the BIG-IP configuration, run the following
-playbook:
-
--   ansible-playbook cleanup.yaml
+-   ansible-playbook playbooks/sa_vcmp/cleanup.yaml
 
 This will remove all the objects configured by the above playbook on the vCMP guest (VS/pools/nodes/Self-IPs/VLANS). It will also remove
-objects configured on the vCMP host
+objects configured on the vCMP host.
 
 HA vCMP BIG-IP
 --------------
 
-![](media/image14.png){width="6.5in" height="2.7215277777777778in"}
+![](media/image14.png)
 
-The variable file will contain VLAN tags along with other information.
-The VLAN tags should match the VLAN tags configured on APIC in the
-logical device cluster. The ansible playbook will only configure the
-BIG-IP.
+- The variable file will contain VLAN tags along with other information.The VLAN tags should match the VLAN tags configured on APIC in the logical device cluster.
+- The ansible playbook will only configure the BIG-IP.
 
 [Click here for scripts](http://google.com)
 
 ### Variable file
 
-This file will contain all the information needed to configure the
-BIG-IP. This variable file is designed to configure the following on the
-BIG-IP
+This file will contain all the information needed to configure the BIG-IP. This variable file is designed to configure the following on the BIG-IP
 
--   Onboarding the vCMP guest : NTP, DNS, Hostname, SSH settings, Module
-    provisioning
--   VLAN's, added to the vCMP host
--   VLAN's assigned from the vCMP host to the vCMP guest
--   2 Self-IP's, SNAT on the vCMP guest
-    -   This represents a 2 ARM mode BIG-IP connection to the APIC
-        -   VLAN is tagged on a BIG-IP interface
-    -   SNAT is set to none (Assumption: Backend servers have the BIG-IP
-        as their default gateway)
--   HTTP service: Pool members, Pool, Virtual Server on the vCMP guest
+- Onboarding the vCMP guest : NTP, DNS, Hostname, SSH settings, Module provisioning
+- VLAN's, added to the vCMP host
+- VLAN's assigned from the vCMP host to the vCMP guest
+- 2 Self-IP's, SNAT on the vCMP guest
+    - This represents a 2 ARM mode BIG-IP connection to the APIC
+        - VLAN is tagged on a BIG-IP interface
+    - SNAT is set to none (Assumption: Backend servers have the BIG-IP as their default gateway)
+- HTTP service: Pool members, Pool, Virtual Server on the vCMP guest
 
 ### Playbook
 
+**Command to execute playbook**
+Make sure you are in executing the playbook for the correct deployment scenario from the appropriate directory. (Directory: ha_vcmp)
+-   ansible-playbook playbooks/ha_vcmp/main.yaml
+
 The main.yaml playbook will be executed. Sequence of events
 
--   If onboarding is set to 'yes' then the tasks in the onboarding.yaml
-    playbook will be executed on the vCMP guest
--   HA pairing between the vCMP guests will be configured
--   Network constructs will be configured on the BIG-IP
-    -   VLAN will be configured on the vCMP host and then assigned to
-        the vCMP guest
-    -   SELF-IP will tie it to an APIC tenant
--   If service is set to 'yes' then the http\_service.yaml playbook will
-    be executed
-    -   The name of the virtual server will tie it to an APIC tenant and
-        LDEV
-
-**Command to execute playbook**
-
--   ansible-playbook main.yaml
+- If onboarding is set to 'yes' then the tasks in the onboarding.yaml playbook will be executed on the vCMP guest
+- HA pairing between the vCMP guests will be configured
+- Network constructs will be configured on the BIG-IP
+    - VLAN will be configured on the vCMP host and then assigned to the vCMP guest
+    - SELF-IP will tie it to an APIC tenant
+- If service is set to 'yes' then the http\_service.yaml playbook will be executed
+    - The name of the virtual server will tie it to an APIC tenant and LDEV
 
 After running the playbook login to both the vCMP hosts and guests and check all the objects are configured
 
-![](media/image15.png){width="5.510076552930884in"
-height="4.808926071741032in"}
+![](media/image15.png)
 
-![](media/image16.png){width="5.510076552930884in"
-height="4.808926071741032in"}
+![](media/image16.png)
 
-![](media/image17.png){width="5.510076552930884in"
-height="4.808926071741032in"}
+![](media/image17.png)
 
-![](media/image18.png){width="5.510076552930884in"
-height="4.808926071741032in"}
+![](media/image18.png)
 
-To perform a cleanup of the BIG-IP configuration, run the following
-playbook:
+To perform a cleanup of the BIG-IP configuration, run the following playbook:
 
--   ansible-playbook cleanup.yaml
+-   ansible-playbook playbooks/ha_vcmp/cleanup.yaml
 
 This will remove all the objects configured by the above playbook on the vCMP guest (VS/pools/nodes/Self-IPs/VLANS). It will also remove
 objects configured on the vCMP host. HA pairing will also be destroyed
@@ -596,70 +561,58 @@ objects configured on the vCMP host. HA pairing will also be destroyed
 SA Virtual Edition BIG-IP
 -------------------------
 
-![](media/image19.png){width="6.5in" height="1.5986111111111112in"}
+![](media/image19.png)
 
-The variable file will contain VLAN tags along with other information.
-The VLAN tags should match the VLAN tags assigned by APIC once the
-service graph is deployed. The ansible playbook will only configure the
-BIG-IP.
+- The variable file will contain VLAN tags along with other information. The VLAN tags should match the VLAN tags assigned by APIC once the service graph is deployed. 
+- The ansible playbook will only configure the BIG-IP.
 
-![](media/image20.png){width="6.5in" height="1.9944444444444445in"}
+VLAN information on the APIC after a service graph is deployed. These are the values that should be provided in your variable file
+![](media/image20.png)
 
 [Click here for scripts](http://google.com)
 
 ### Variable file
 
-This file will contain all the information needed to configure the
-BIG-IP. This variable file is designed to configure the following on the
-BIG-IP
+This variable file is designed to configure the following on the BIG-IP
 
--   Onboarding the vCMP guest : NTP, DNS, Hostname, SSH settings, Module
-    provisioning
--   Networking: VLAN's, Self-IPs
--   HTTP service: Pool members, Pool, Virtual Server
+- Onboarding: NTP, DNS, Hostname, SSH settings, Module provisioning
+- Networking: VLAN's, Self-IPs
+- HTTP service: Pool members, Pool, Virtual Server
 
 ### Playbook
 
-The main.yaml playbook will be executed. Sequence of events
--   If onboarding is set to 'yes' then the tasks in the onboarding.yaml
-    playbook will be executed
--   Network constructs will be configured on the BIG-IP (VLAN and
-    Self-IP)
-    -   The VLAN will be untagged on the respective interface
--   If service is set to 'yes' then the http\_service.yaml playbook will
-    be executed
-    -   The name of the virtual server will tie it to an APIC tenant and
-        LDEV
-
 **Command to execute playbook**
+Make sure you are in executing the playbook for the correct deployment scenario from the appropriate directory. (Directory: sa_ve)
+-   ansible-playbook playbooks/sa_ve/main.yaml
 
--   ansible-playbook main.yaml
+The main.yaml playbook will be executed. Sequence of events
+- If onboarding is set to 'yes' then the tasks in the onboarding.yaml playbook will be executed
+- Network constructs will be configured on the BIG-IP (VLAN and Self-IP)
+    - The VLAN will be untagged on the respective interface
+- If service is set to 'yes' then the http\_service.yaml playbook will be executed
+    - The name of the virtual server will tie it to an APIC tenant and LDEV
 
 After running the playbook login to the BIG-IP and check all the objects are configured
 
-![](media/image21.png){width="6.5in" height="4.1097222222222225in"}
+![](media/image21.png)
 
-To perform a cleanup of the BIG-IP configuration, run the following
-playbook:
+To perform a cleanup of the BIG-IP configuration, run the following playbook:
 
--   ansible-playbook cleanup.yaml
+-   ansible-playbook playbooks/sa_ve/cleanup.yaml
 
 This will remove all the objects configured by the above playbook (VS/pools/nodes/Self-IPs/VLANS)
 
 HA Virtual Edition BIG-IP
 -------------------------
 
-![](media/image22.png){width="6.5in" height="2.536111111111111in"}
+![](media/image22.png)
 
-The variable file will contain VLAN tags along with other information.
-The VLAN tags should match the VLAN tags assigned by APIC once the
-service graph is deployed. The ansible playbook will only configure the
-BIG-IP.
+- The variable file will contain VLAN tags along with other information. The VLAN tags should match the VLAN tags assigned by APIC once the service graph is deployed.
+- The ansible playbook will only configure the BIG-IP.
 
-![](media/image23.png){width="6.5in" height="1.9944444444444445in"}
+![](media/image23.png)
 
-The playbook along with configuration as done on the standalone VE setup
-will also configure
+The playbook along with configuration as done on the standalone VE setup will also configure
 
 -   HA setup between the two BIG-IP's
 -   Onboarding tasks on both BIG-IP's
@@ -669,42 +622,37 @@ will also configure
 
 ### Variable file
 
-Variable file will have additional information needed to setup the
-BIG-IP HA pair
+Variable file will have additional information needed to setup the BIG-IP HA pair
 
 ### Playbook
 
+**Command to execute playbook**
+Make sure you are in executing the playbook for the correct deployment scenario from the appropriate directory. (Directory: ha_ve)
+-   ansible-playbook playbooks/ha_ve/main.yaml
+
 The main.yaml playbook will be executed. Sequence of events
 
--   If onboarding is set to 'yes' then the onboarding.yaml playbook will
-    be executed on both BIG-IPs
--   HA pairing will be configured
--   Network constructs will be configured on the both the BIG-IPs
-    -   The name of the VLAN and SELF-IP will tie it to an APIC tenant
--   If service is set to 'yes' then the http\_service.yaml playbook will
-    be executed on one BIG-IP (configuration will be synced
-    automatically between the pair of BIG-IPs)
-    -   The name of the virtual server will tie it to an APIC tenant and
+- If onboarding is set to 'yes' then the onboarding.yaml playbook will be executed on both BIG-IPs
+- HA pairing will be configured
+- Network constructs will be configured on the both the BIG-IPs
+    - The name of the VLAN and SELF-IP will tie it to an APIC tenant
+- If service is set to 'yes' then the http\_service.yaml playbook will be executed on one BIG-IP (configuration will be synced automatically between the pair of BIG-IPs)
+    - The name of the virtual server will tie it to an APIC tenant and
         LDEV
 
 After running the playbook login to both the BIG-IP and that check all the objects are configured and HA pairing has been done.
 
-![](media/image24.png){width="5.510076552930884in"
-height="4.808926071741032in"}
+![](media/image24.png)
 
-![](media/image25.png){width="5.510076552930884in"
-height="4.808926071741032in"}
+![](media/image25.png)
 
-![](media/image26.png){width="5.510076552930884in"
-height="4.808926071741032in"}
+![](media/image26.png)
 
-![](media/image27.png){width="5.510076552930884in"
-height="4.808926071741032in"}
+![](media/image27.png)
 
-To perform a cleanup of the BIG-IP configuration, run the following
-playbook:
+To perform a cleanup of the BIG-IP configuration, run the following playbook:
 
--   ansible-playbook cleanup.yaml
+-   ansible-playbook playbooks/ha_ve/cleanup.yaml
 
 This will remove all the objects configured by the above playbook (VS/pools/nodes/Self-IPs/VLANS). It will also remove all the objects
 that setup HA (HA pairing will be destroyed)
