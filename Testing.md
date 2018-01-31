@@ -51,6 +51,8 @@ Pre-requisite
 - The APIC configuration DOES NOT need to be present for the ansible playbooks below to work
 - The playbooks will NOT configure the APIC, only the BIG-IP
 
+Please go through the [Standalone Physical BIG-IP](#standalone-physical-big-ip) deployment model first since detailed explanation on how to run the playbooks and expected results are provided for this model. Rest of the deployment models will follow the same structure for execution with subtle difference which are mentioned furthur in each deployment model
+
 Topology
 ========
 
@@ -87,6 +89,8 @@ Topology
 
 Directory structure
 ===================
+
+While following the guide below assumption is that all the folders are placed in a directory called 'playbooks'
 
 ![](image2.png)
 
@@ -240,8 +244,66 @@ The main.yaml playbook will be executed. Sequence of events
     - The name of the virtual server will tie it to an APIC tenant and LDEV
 
 **Command to execute playbook**
-Make sure you are in executing the playbook for the correct deployment scenario from the appropriate directory. (Dir: sa_phy)
--   ansible-playbook main.yaml
+Make sure you are in executing the playbook for the correct deployment scenario from the appropriate directory. (Directory: sa_phy)
+-   ansible-playbook playbooks/sa_phy/main.yaml
+
+**Sample of playbook execution**
+```
+ansible-playbook playbooks/sa_phy/main.yaml
+
+PLAY [Standalone Physical Unmanaged Mode BIG-IP setup] ***************************************************************
+
+TASK [include_tasks] *************************************************************************************************
+included: /root/ps_ansible/playbooks/aci_guide/common/onboarding.yaml for localhost
+
+TASK [Configure NTP server on BIG-IP] ********************************************************************************
+changed: [localhost -> localhost]
+
+TASK [Configure BIG-IP hostname] *************************************************************************************
+changed: [localhost -> localhost]
+
+TASK [Manage SSHD setting on BIG-IP] *********************************************************************************
+changed: [localhost -> localhost]
+
+TASK [Manage BIG-IP DNS settings] ************************************************************************************
+changed: [localhost -> localhost]
+
+TASK [Provision BIG-IP with appropriate modules] *********************************************************************
+ok: [localhost -> localhost] => (item={u'name': u'ltm', u'level': u'nominal'})
+
+TASK [Add VLAN(s)] ***************************************************************************************************
+changed: [localhost] => (item={u'interface': u'2.2', u'name': u'External_VLAN', u'id': u'1195'})
+changed: [localhost] => (item={u'interface': u'2.2', u'name': u'Internal_VLAN', u'id': u'1695'})
+
+TASK [Add SELF-IP(s)] ************************************************************************************************
+changed: [localhost] => (item={u'netmask': u'255.255.255.0', u'vlan': u'External_VLAN', u'name': u'External-SelfIP', u'address': u'10.168.56.10'})
+changed: [localhost] => (item={u'netmask': u'255.255.255.0', u'vlan': u'Internal_VLAN', u'name': u'Internal-SelfIP', u'address': u'192.168.56.10'})
+
+TASK [Add route(s)] **************************************************************************************************
+changed: [localhost -> localhost] => (item={u'gw_address': u'10.168.56.1', u'netmask': u'0.0.0.0', u'destination': u'0.0.0.0', u'name': u'default'})
+
+TASK [include_tasks] *************************************************************************************************
+included: /root/ps_ansible/playbooks/aci_guide/common/http_service.yaml for localhost
+
+TASK [Create nodes] **************************************************************************************************
+changed: [localhost -> localhost] => (item={u'host': u'192.168.56.140', u'port': u'80'})
+changed: [localhost -> localhost] => (item={u'host': u'192.168.56.141', u'port': u'80'})
+
+TASK [Create pool] ***************************************************************************************************
+changed: [localhost -> localhost]
+
+TASK [Add Pool members] **********************************************************************************************
+changed: [localhost -> localhost] => (item={u'host': u'192.168.56.140', u'port': u'80'})
+changed: [localhost -> localhost] => (item={u'host': u'192.168.56.141', u'port': u'80'})
+
+TASK [Add Virtual Server] ********************************************************************************************
+changed: [localhost -> localhost]
+
+PLAY RECAP ***********************************************************************************************************
+111
+
+```
+Contets of the main playbook
 
 **Main.yaml**
 ```
@@ -299,6 +361,7 @@ Make sure you are in executing the playbook for the correct deployment scenario 
     when: '"yes" in service '	
 
 ```
+To view contents of playbook of other playbooks please go to github repo where the [files are located](link) 
 
 After running the playbook login to the BIG-IP and check all the objects are configured
 
@@ -306,9 +369,43 @@ After running the playbook login to the BIG-IP and check all the objects are con
 
 To perform a cleanup of the BIG-IP configuration, run the following playbook:
 
-- ansible-playbook cleanup.yaml
+- ansible-playbook playbooks/sa_phy/cleanup.yaml
 
 This will remove all the objects configured by the above playbook (VS/pools/nodes/Self-IPs/VLANS)
+
+```
+ansible-playbook playbooks/sa_phy/cleanup.yaml
+
+PLAY [Cleanup Standalone Physical Unmanaged Mode BIG-IP setup] *******************************************************
+
+TASK [include_tasks] *************************************************************************************************
+included: /root/ps_ansible/playbooks/aci_guide/common/http_service_cleanup.yaml for localhost
+
+TASK [Delete Virtual Server] *****************************************************************************************
+
+changed: [localhost -> localhost]
+
+TASK [Delete pool] ***************************************************************************************************
+changed: [localhost -> localhost]
+
+TASK [Delete nodes] **************************************************************************************************
+changed: [localhost -> localhost] => (item={u'host': u'192.168.56.140', u'port': u'80'})
+changed: [localhost -> localhost] => (item={u'host': u'192.168.56.141', u'port': u'80'})
+
+TASK [Delete route(s)] ***********************************************************************************************
+changed: [localhost -> localhost] => (item={u'gw_address': u'10.168.56.1', u'netmask': u'0.0.0.0', u'destination': u'0.0.0.0', u'name': u'default'})
+
+TASK [Delete SELF-IP(s)] *********************************************************************************************
+changed: [localhost] => (item={u'netmask': u'255.255.255.0', u'vlan': u'External_VLAN', u'name': u'External-SelfIP', u'address': u'10.168.56.10'})
+changed: [localhost] => (item={u'netmask': u'255.255.255.0', u'vlan': u'Internal_VLAN', u'name': u'Internal-SelfIP', u'address': u'192.168.56.10'})
+
+TASK [Delete VLAN(s)] ************************************************************************************************
+changed: [localhost] => (item={u'interface': u'2.2', u'name': u'External_VLAN', u'id': u'1195'})
+changed: [localhost] => (item={u'interface': u'2.2', u'name': u'Internal_VLAN', u'id': u'1695'})
+
+PLAY RECAP ***********************************************************************************************************
+localhost                  : ok=7    changed=6    unreachable=0    failed=0
+```
 
 HA Physical BIG-IP
 ------------------
