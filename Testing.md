@@ -90,7 +90,7 @@ Topology
 Directory structure
 ===================
 
-While following the guide below assumption is that all the folders are placed in a directory called 'playbooks'
+While following the guide below assumption is that all the folders are placed in a directory called **'playbooks'**
 
 ![](image2.png)
 
