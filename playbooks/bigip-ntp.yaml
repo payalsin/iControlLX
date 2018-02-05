@@ -1,0 +1,15 @@
+---
+- name: Configure NTP server on BIG-IP
+  hosts: bigip
+  gather_facts: false
+
+  tasks:
+
+  - name: Configure NTP server on BIG-IP
+    bigip_device_ntp:
+      server: "{{ inventory_hostname }}"
+      user: "{{ username }}"
+      password: "{{ password }}"
+      ntp_servers: ""
+      validate_certs: False
+    delegate_to: localhost

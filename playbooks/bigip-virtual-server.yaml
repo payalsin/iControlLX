@@ -1,0 +1,70 @@
+---
+- name: Configure Nodes/Pools and Virtual Server
+  hosts: bigip
+  gather_facts: false
+
+  tasks:
+
+  - name: Create nodes
+    bigip_node:
+      server: "{{ inventory_hostname }}"
+      user: "{{ username }}"
+      password: "{{ password }}"
+      host: ""
+      name: ""
+      validate_certs: False
+    with_items:
+    delegate_to: localhost
+
+  - name: Create pool
+    bigip_pool:
+      server: "{{ inventory_hostname }}"
+      user: "{{ username }}"
+      password: "{{ password }}"
+      name: ""
+      lb_method: ""
+      monitors: ""
+      monitor_type: ""
+      validate_certs: False
+    delegate_to: localhost
+
+  - name: Add Pool members
+    bigip_pool_member:
+      server: "{{ inventory_hostname }}"
+      user: "{{ username }}"
+      password: "{{ password }}"
+      state: "present"
+      name: ""
+      host: ""
+      port: ""
+      pool: ""
+      validate_certs: False
+    with_items:
+    delegate_to: localhost
+
+  - name: Add Virtual Server
+    block:
+    - bigip_virtual_server:
+       server: "{{ inventory_hostname }}"
+       user: "{{ username }}"
+       password: "{{ password }}"
+       name: "http"
+       destination: ""
+       port: ""
+       all_profiles:
+       - http
+       pool: ""
+       snat: "Automap"
+       validate_certs: False
+      delegate_to: localhost
+    rescue:
+    - bigip_virtual_server:
+       server: "{{ inventory_hostname }}"
+       user: "{{ username }}"
+       password: "{{ password }}"
+       name: "http"
+       state: absent
+       validate_certs: False
+      delegate_to: localhost
+    always:
+    - debug: msg="Executed playbook"

@@ -1,0 +1,37 @@
+---
+- hosts: localhost
+  tasks:
+ 
+  - name: Get iApp from Github
+    get_url:
+      url: https://github.com/F5Networks/f5-application-services-integration-iApp/releases/download/v2.0.003/appsvcs_integration_v2.0.003.tmpl
+      dest: /var/tmp
+      validate_certs: False
+
+- name: iApp deployment
+  hosts: bigip
+  gather_facts: false
+
+  tasks:
+
+  - name: Upload iApp template to BIG-IP
+    bigip_iapp_template:
+      server: "{{inventory_hostname}}"
+      user: "{{ username }}"
+      password: "{{ password }}"
+      content: "{{ lookup('file', '/var/tmp/appsvcs_integration_v2.0.003.tmpl') }}"
+      state: "present"
+      validate_certs: False
+    delegate_to: localhost
+
+  - name: Deploy iApp
+    bigip_iapp_service:
+      name: "HTTP"
+      template: "appsvcs_integration_v2.0.003"
+      parameters: "{{ lookup('file', 'iapp.json') }}"
+      server: "{{inventory_hostname}}"
+      user: "{{ username }}"
+      password: "{{ password }}"
+      state: "present"
+      validate_certs: False
+    delegate_to: localhost

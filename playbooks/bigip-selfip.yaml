@@ -1,0 +1,31 @@
+---
+- name: Configure SELF-IP's on  BIG-IP
+  hosts: bigip
+  gather_facts: false
+
+  tasks:
+
+
+  - name: Configure Internal SELF-IP on the BIG-IP
+    bigip_selfip:
+     server: "{{ inventory_hostname }}"
+     user: "{{ username }}"
+     password: "{{ password }}"
+     name: ""
+     address: ""
+     netmask: ""
+     vlan: ""
+     validate_certs: False
+    delegate_to: localhost
+
+  - name: Configure External SELF-IP on the BIG-IP
+    bigip_selfip:
+     server: "{{ inventory_hostname }}"
+     user: "{{ username }}"
+     password: "{{ password }}"
+     name: ""
+     address: ""
+     netmask: ""
+     vlan: ""
+     validate_certs: False
+    delegate_to: localhost

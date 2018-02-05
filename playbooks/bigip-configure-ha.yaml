@@ -1,0 +1,141 @@
+---
+- name: HA pairing
+  hosts: bigip
+  gather_facts: false
+
+  vars_files:
+   - ha-variable-file.yaml
+ 
+  tasks:
+
+  - name: Configure BIG-IP1 hostname
+    bigip_hostname:
+      server: "{{ inventory_hostname }}"
+      user: "{{ username }}"
+      password: "{{ password }}"
+      validate_certs: False
+      hostname:  "{{ bigip1_hostname }}"
+    delegate_to: localhost
+
+  - name: Configure BIG-IP2 hostname
+    bigip_hostname:
+      server: "{{ bigip2_ip }}"
+      user: "{{ bigip2_username }}"
+      password: "{{ bigip2_password }}"
+      hostname:  "{{ bigip2_hostname }}"
+      validate_certs: False
+    delegate_to: localhost
+
+  # with_items is going to loop over the vlan_infomration values
+  # from the variable file
+  # We have already added the VLAN_tags on BIG-IP1 in previous lab
+  - name: Add Internal and External VLAN(s) on BIG-IP2
+    bigip_vlan:
+      server: "{{ bigip2_ip }}"
+      user: "{{ bigip2_username }}"
+      password: "{{ bigip2_password }}"
+      tag: "{{item.id}}"
+      untagged_interfaces:
+      - "{{item.interface}}"
+      validate_certs: False
+    with_items: "{{vlan_information}}"
+    delegate_to: localhost
+
+  - name: Add Internal External SELF-IP(s) on BIG-IP2
+    bigip_selfip:
+     server: "{{ bigip2_ip }}"
+     user: "{{ bigip2_username }}"
+     password: "{{ bigip2_password }}"
+     name: "{{item.name}}"
+     address: "{{item.address}}"
+     netmask: "{{item.netmask}}"
+     vlan: "{{item.vlan}}"
+     validate_certs: False
+    with_items: "{{bigip2_selfip_information}}"
+    delegate_to: localhost
+
+  - name: Config Sync/unicast/mirroring address - BIGIP1
+    bigip_device_connectivity:
+      server: "{{ inventory_hostname }}"
+      user: "{{ username }}"
+      password: "{{ password }}"
+      config_sync_ip: "{{ bigip1_ha_selfip }}"
+      mirror_primary_address: "{{ bigip1_ha_selfip }}"
+      unicast_failover:
+      - address: "{{ bigip1_ha_selfip }}"
+      - address: "{{inventory_hostname}}"
+      validate_certs: False
+    delegate_to: localhost
+
+  - name: Config Sync/unicast/mirroring address - BIGIP2
+    bigip_device_connectivity:
+      server: "{{ bigip2_ip }}"
+      user: "{{ bigip2_username }}"
+      password: "{{ bigip2_password }}"
+      config_sync_ip: "{{ bigip2_ha_selfip }}"
+      mirror_primary_address: "{{ bigip2_ha_selfip }}"
+      unicast_failover:
+      - address: "{{ bigip2_ha_selfip }}"
+      - address: "{{ bigip2_ip }}"
+      validate_certs: False
+    delegate_to: localhost
+
+  - name: Device trust
+    bigip_device_trust:
+      server: "{{ inventory_hostname }}"
+      user: "{{ username }}"
+      password: "{{ password }}"
+      peer_server: "{{ bigip2_ip }}"
+      peer_hostname: "{{ bigip2_hostname }}"
+      peer_user: "{{ bigip2_username }}"
+      peer_password: "{{ bigip2_password }}"
+      validate_certs: False
+    delegate_to: localhost
+
+  - name: Add Device Group
+    bigip_device_group:
+      server: "{{ inventory_hostname }}"
+      user: "{{ username }}"
+      password: "{{ password }}"
+      name: "deviceGrp"
+      auto_sync: yes
+      type: "sync-failover"
+      validate_certs: False
+    delegate_to: localhost
+
+  - name: Add members to the device group
+    bigip_device_group_member:
+      server: "{{ inventory_hostname }}"
+      user: "{{ username }}"
+      password: "{{ password }}"
+      device_group: "deviceGrp"
+      name: "{{ item }}"
+      validate_certs: False
+    with_items:
+      - "{{ bigip1_hostname }}"
+      - "{{ bigip2_hostname }}"
+    delegate_to: localhost
+
+  - name: Perform a config sync
+    bigip_configsync_action:
+      server: "{{ inventory_hostname }}"
+      user: "{{ username }}"
+      password: "{{ password }}"
+      device_group: "deviceGrp"
+      sync_device_to_group: yes
+      validate_certs: False
+    delegate_to: localhost
+
+  - name: Add Floating SELF-IP(s) on BIG-IP1
+    bigip_selfip:
+      server: "{{ inventory_hostname }}"
+      user: "{{ username }}"
+      password: "{{ password }}"
+      name: "{{item.name}}"
+      address: "{{item.address}}"
+      netmask: "{{item.netmask}}"
+      vlan: "{{item.vlan}}"
+      traffic_group: "traffic-group-1"
+      validate_certs: False
+    with_items: "{{ floating_selfip_information }}"
+    delegate_to: localhost

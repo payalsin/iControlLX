@@ -1,0 +1,16 @@
+---
+- name: Configure Static Route on  BIG-IP
+  hosts: bigip
+  gather_facts: false
+
+  tasks:
+
+  - name: Add default route
+    bigip_static_route:
+      server: "{{ inventory_hostname }}"
+      user: "{{ username }}"
+      password: "{{ password }}"
+      name: "default"
+      gateway_address: ""
+      destination: ""
+    delegate_to: localhost

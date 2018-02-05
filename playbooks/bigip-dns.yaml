@@ -1,0 +1,16 @@
+---
+- name: Configure DNS settings on BIG-IP
+  hosts: bigip
+  gather_facts: false
+
+  tasks:
+
+  - name: Manage BIG-IP DNS settings
+    bigip_device_dns:
+     server: "{{ inventory_hostname }}"
+     user: "{{ username }}"
+     password: "{{ password }}"
+     name_servers: ""
+     search: ""
+     validate_certs: False
+    delegate_to: localhost

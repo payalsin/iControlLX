@@ -1,0 +1,15 @@
+---
+- name: Configure hostname on BIG-IP
+  hosts: bigip
+  gather_facts: false
+
+  tasks:
+
+  - name: Configure BIG-IP hostname
+    bigip_hostname:
+      server: "{{ inventory_hostname }}"
+      user: "{{ username }}"
+      password: "{{ password }}"
+      validate_certs: False
+      hostname:  ""
+    delegate_to: localhost

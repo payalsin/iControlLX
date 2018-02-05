@@ -1,0 +1,15 @@
+---
+- name: Change global-settings on BIG-IP
+  hosts: bigip
+  gather_facts: false
+
+  tasks:
+
+  - name: Disable GUI wizard on BIG-IP
+    bigip_sys_global:
+      server: "{{ inventory_hostname }}"
+      user: "{{ username }}"
+      password: "{{ password }}"
+      gui_setup:
+      validate_certs: False
+    delegate_to: localhost

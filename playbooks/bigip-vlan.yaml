@@ -1,0 +1,28 @@
+---
+- name: Configure VLANs on BIG-IP
+  hosts: bigip
+  gather_facts: false
+
+  tasks:
+
+  - name: Add Internal VLAN
+    bigip_vlan:
+      server: "{{ inventory_hostname }}"
+      user: "{{ username }}"
+      password: "{{ password }}"
+      untagged_interfaces: 
+      name: ""
+      tag: ""
+      validate_certs: False
+    delegate_to: localhost
+
+  - name: Add External VLAN
+    bigip_vlan:
+      server: "{{ inventory_hostname }}"
+      user: "{{ username }}"
+      password: "{{ password }}"
+      untagged_interfaces: 
+      name: ""
+      tag: ""
+      validate_certs: False
+    delegate_to: localhost

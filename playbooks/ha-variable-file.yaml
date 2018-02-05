@@ -1,0 +1,30 @@
+bigip2_ip: 10.1.1.11
+bigip2_username: "admin"
+bigip2_password: "admin"
+
+#Information needed if BIG-IP is setup in HA pair
+bigip1_hostname: bigipveha1.local
+bigip2_hostname: bigipveha2.local
+
+vlan_information:
+- name: "Internal"
+  id: "10"
+  interface: "1.1"
+- name: "External"
+  id: "11"
+  interface: "1.2"
+
+bigip1_ha_selfip: "10.1.10.10"
+bigip2_ha_selfip: "10.1.10.11"
+
+bigip2_selfip_information:
+- name: 'Self-Internal'
+  address: '10.1.10.11'
+  netmask: '255.255.255.0'
+  vlan: "Internal"
+
+floating_selfip_information:
+- name: 'Self-Internal-Float'
+  address: '10.1.10.13'
+  netmask: '255.255.255.0'
+  vlan: "Internal"

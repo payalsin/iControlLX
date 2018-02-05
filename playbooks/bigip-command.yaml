@@ -1,0 +1,19 @@
+---
+- name: Running tmsh commands on BIG-IP
+  hosts: bigip
+  gather_facts: false
+
+  tasks:
+
+  - name: Run show version on remote devices
+    bigip_command:
+      server: "{{ inventory_hostname }}"
+      user: "{{username}}"
+      password: "{{password}}"
+      commands:
+      - show sys version
+      validate_certs: False
+    delegate_to: localhost
+    register: result
+  
+  - debug: var=lookup.stdout_lines
